@@ -16,7 +16,7 @@ public class CryptoLib {
 		int gcd = -1;
 		int s = -1;
 		int t = -1;
-   
+
     int r1;
     int r2;
     int q0;
@@ -37,7 +37,6 @@ public class CryptoLib {
         p_r = r2;
         q0 = r1/r2;
         r0 = r1-q0*r2;
-
         r1 = r2;
         r2 = r0;
     }
@@ -61,7 +60,7 @@ public class CryptoLib {
     n[0] = 0;
     n[1] = 1;
     n[2] = 0;
-   
+
 
     if ( a>=b){
         largest=a;
@@ -192,7 +191,17 @@ public class CryptoLib {
 	 * Fermat Witness. Tests values from 2 (inclusive) to "n/3" (exclusive).
 	 **/
 	public static int FermatPT(int n) {
-		return -1;
+
+		int lowestFermatWitness = 0;
+		int loopMax = (int) Math.floor(n/3);
+
+		for(int i = 2; i < loopMax; i++){
+			if((i^(n-1) % n) =! 1){
+				lowestFermatWitness = i;
+				break;
+			}
+		}
+		return lowestFermatWitness;
 	}
 
 	/**
