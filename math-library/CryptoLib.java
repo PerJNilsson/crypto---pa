@@ -17,7 +17,7 @@ public class CryptoLib {
 		int s = -1;
 		int t = -1;
     // EA
-
+    
 
 
 
@@ -40,7 +40,7 @@ public class CryptoLib {
         lowest = a;
     }
     q = largest / lowest;
-    while (q>0 && lowest != 0){
+    while (q>gcd){
         q = largest / lowest;
         m[2] = m[0] - q*m[1];
         m[0]=m[1];
@@ -55,7 +55,7 @@ public class CryptoLib {
             lowest = r;
         }
     }
-    gcd = lowest; s = n[2]; t = m[2];
+    s = n[2]; t = m[2];
 		result[0] = gcd;
 		result[1] = s;
 		result[2] = t;
