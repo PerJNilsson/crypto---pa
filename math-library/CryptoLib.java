@@ -16,19 +16,23 @@ public class CryptoLib {
 		int gcd = -1;
 		int s = -1;
 		int t = -1;
-    // EA
-    int a_ea, b_ea;
+   
+    int r1;
+    int r2;
+    int q0;
+    int r0=1;
+    int p_r = -1;
+
     if (a > b){
-        a_ea = a;
-        b_ea = b;
+        r1 = a;
+        r2 = b;
     }
     else {
-        a_ea = b;
-        b_ea = a;
+        r2 = b;
+        r1 = a;
     }
-    int r1; int r2; int q0; int r0; int p_r = -1;
-    r1 = a_ea; r2 = b_ea; q0=0; r0=1;
-    // EA
+
+    // Euclidian Algorithm
     while (r0 > 0) {
         p_r = r2;
         q0 = r1/r2;
@@ -39,7 +43,7 @@ public class CryptoLib {
     }
     gcd = p_r;
 
-    // EEA
+    // Extended Euclidean Algorithm
     int[] m = new int[3];
     int[] n = new int[3];
     int quotient;
