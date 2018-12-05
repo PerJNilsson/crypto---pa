@@ -26,7 +26,7 @@ public class CryptoLib {
         a_ea = b;
         b_ea = a;
     }
-    int r1; int r2; int q0; int r0; int p_r = -1;;
+    int r1; int r2; int q0; int r0; int p_r = -1;
     r1 = a_ea; r2 = b_ea; q0=0; r0=1;
     // EA
     while (r0 > 0) {
@@ -38,7 +38,7 @@ public class CryptoLib {
         r2 = r0;
     }
     gcd = p_r;
-    
+
     // EEA
     int[] m = new int[3];
     int[] n = new int[3];
@@ -113,7 +113,28 @@ public class CryptoLib {
 	 * Returns Euler's Totient for value "n".
 	 **/
 	public static int EulerPhi(int n) {
-		return -1;
+      int phi_n = 1;
+      int gcd;
+      for (int i=2; i<n; i++){
+          int r1; int r2; int q0; int r0; int p_r = -1;;
+          r1 = n; r2 = i; q0=0; r0=1;
+          // EA
+          while (r0 > 0) {
+              p_r = r2;
+              q0 = r1/r2;
+              r0 = r1-q0*r2;
+              r1 = r2;
+              r2 = r0;
+          }
+          gcd = p_r;
+          if (gcd == 1){
+              phi_n++;
+          }
+      }
+      if( n < 0){
+          phi_n = 0;
+      }
+		return phi_n;
 	}
 
 	/**
@@ -121,7 +142,45 @@ public class CryptoLib {
 	 * modular inverse does not exist.
 	 **/
 	public static int ModInv(int n, int m) {
-		return -1;
+
+      while(n < 0){
+          n = n+m;
+      }
+      int v = -1;
+      int smt;
+      int gcd;
+      int a_ea; int b_ea;
+
+      // m is always larger than n;
+      a_ea = m;
+      b_ea = n;
+      int r1; int r2; int q0; int r0; int p_r = -1;
+      r1 = a_ea; r2 = b_ea; q0=0; r0=1;
+
+      // EA to check if modular inverse exists
+
+      while (r0 > 0) {
+          p_r = r2;
+          q0 = r1/r2;
+          r0 = r1-q0*r2;
+
+          r1 = r2;
+          r2 = r0;
+      }
+      gcd = p_r;
+      if (gcd < 1){
+          v = 0; // if not exists
+      }
+      else {
+          int three[] = new int[3];
+          three = EEA(n, m); // solve the equation n*s + m*t = gcd
+          v = three[1];
+          if (v < 0){
+              v = v + m; // sets v to a positive interger
+          }
+      }
+
+      return v;
 	}
 
 	/**
