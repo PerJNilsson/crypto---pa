@@ -38,72 +38,74 @@ public class CryptoLib {
         r2 = r0;
     }
     gcd = p_r;
-    
+
     // EEA
     int[] m = new int[3];
+    m[0] = 1; m[1] = 0; m[2] = 0;
     int[] n = new int[3];
-    int quotient;
-    int remainder;
+    n[0] = 0; n[1] = 1; n[2] = 0;
+    int q = gcd +100;
+    int r;
     int largest;
     int lowest;
-    int check =0;
-    int[] result = new int[3];
-    int [][] listm = new int[2][4];
-
-    m[0] = 1;
-    m[1] = 0;
-    m[2] = 0;
-
-    n[0] = 0;
-    n[1] = 1;
-    n[2] = 0;
-   
-
-    if ( a>=b){
-        largest=a;
-        lowest=b;
+    if (a >= b){
+        largest = a;
+        lowest = b;
     }
-
     else {
-        largest=b;
-        lowest=a;
+        largest = b;
+        lowest = a;
     }
-
-    listm[0][0] = largest; listm[0][1] = 1; listm[0][2] = 0; listm[0][3] = Integer.MAX_VALUE;
-    listm[1][0] = lowest; listm[1][1] = 0; listm[1][2] = 1; listm[1][3] = largest / lowest;
-
-    if (listm[0][0] == gcd){m[2]=listm[0][1]; n[2]=listm[0][2]; check =1;}
-
-    while(check == 0){
-        if (listm[1][0] == gcd){m[2]=listm[1][1]; n[2]=listm[1][2]; break;}
-        quotient = listm[0][0] / listm[1][0];
-        remainder = listm[0][0] - listm[1][0]*quotient;
-
-        int tmpx = listm[0][1];
-        int tmpy = listm[0][2];
-
-        listm[0][0] = listm[1][0];
-        listm[0][1] = listm[1][1];
-        listm[0][2] = listm[1][2];
-        listm[0][3] = listm[1][3];
-
-        listm[1][0] = remainder;
-        listm[1][1] = tmpx - quotient*listm[1][1];
-        listm[1][2] = tmpy - quotient*listm[1][2];
-        listm[1][3] = quotient;
+    if (lowest != 0){ q = largest / lowest; }
+    r = largest - lowest*q;
+    if ( r == 0){
+        if (a > b){
+            s = 0;
+            t = 1;
+        }
+        else {
+            s = 1*q;
+            t = 0;
+        }
     }
-
-    if (a>=b){
-        s=m[2];
-        t=n[2];
+    if ( q == 1 || q == largest){
+        if (a > b){
+            s = 0;
+            t = 1;
+        }
+        else {
+            s = 1;
+            t = 0;
+        }
+	
     }
+    while (r>gcd){
+        q = largest / lowest;
+        m[2] = m[0] - q*m[1];
+        m[0]=m[1];
+        m[1]=m[2];
 
-    else{
-        s = n[2];
-        t=m[2];
+        n[2] = n[0] - q*n[1];
+        n[0]=n[1];
+        n[1]=n[2];
+        System.out.printf("%d %d %d%n",q, r,gcd);
+        r = largest - lowest*q;
+        largest = lowest;
+        lowest = r;
+
+        if (a > b){
+            s = m[2];
+            t = n[2];
+        }
+        else {
+            s = n[2];
+            t = m[2];
+        }
+	
     }
-
-    result[0] = gcd;
+    int[] result = new int[3];
+    // s = n[2]; t = m[2];
+   	result[0] = gcd;
 		result[1] = s;
 		result[2] = t;
 		return result;
