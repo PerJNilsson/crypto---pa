@@ -224,7 +224,26 @@ public class CryptoLib {
 	 * different output values the hash function can produce.
 	 **/
 	public static double HashCP(double n_samples, double size) {
-		return -1;
+
+		BigInteger size_bi = new BigInteger(String.valueOf((int) size));
+		BigInteger samples_bi = new BigInteger(String.valueOf((int) n_samples));
+
+		int size_int = (int) size;
+		int loopMax = (int) n_samples;
+		BigDecimal probability_bd = new BigDecimal("0");
+
+		BigInteger nominator = new BigInteger(String.valueOf(size_int));
+		for(int i = 1; i < loopMax; i++){
+			nominator = nominator.multiply(new BigInteger(String.valueOf(size_int-i)));
+		}
+
+		BigInteger denominator = size_bi.pow((int) n_samples);
+
+		BigDecimal tmp_bd = new BigDecimal(nominator).divide(new BigDecimal(denominator), 6, RoundingMode.HALF_EVEN);
+
+		double probability = 1.0 - tmp_bd.doubleValue();
+
+		return probability;
 	}
 
 }
