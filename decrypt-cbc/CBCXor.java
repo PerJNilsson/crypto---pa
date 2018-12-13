@@ -14,8 +14,8 @@ public class CBCXor {
 		byte[] first_block = null;
 		byte[] encrypted = null;
 		byte[] tmp_block = null;
-		byte[] c0 = new byte[length_block];
-                byte[] IV = new byte[length_block];
+		byte[] c0 = null;
+                byte[] IV = null;
                 byte[] key = null;
                
                 
@@ -25,23 +25,21 @@ public class CBCXor {
                         encrypted = DatatypeConverter.parseHexBinary(br.readLine());
                         br.close();
 		} catch (Exception err) {
-			System.err.println("Error handling file. WHYYYYYYYYY");
+			System.err.println("Error handling file.");
 			err.printStackTrace();
 			System.exit(1);
 		}
 
                 IV = getBlocks(encrypted, block_counter);
                 block_counter++;
-                //System.out.println(IV);
                 c0 = getBlocks(encrypted, block_counter);
                 block_counter++;
                 key = getKey(IV, c0, first_block);
-                //System.out.println(key);
+
+                // Now when we have the key, one can start decrypting the whole message in C1 and forward
                 total_blocks = encrypted.length / length_block; // Says we have a total of 9 blocks.
                 byte[] all_message = new byte[total_blocks*length_block];
-                //System.out.println(total_blocks);
-                // dectrypt whole input - c0 == message
-                for (int i=0; i<total_blocks-2; i++){
+                for (int i=0; i<total_blocks-2; i++){  // total_blocks -2 since the block counter is two and we want to know from c1 and forward.
                         tmp_block = decyption_scheme(encrypted, block_counter, key);
                         block_counter++;
                         for (int j=0; j<length_block; j++){
@@ -94,12 +92,12 @@ public class CBCXor {
 
         public static byte[] XOR(byte[] block_i, byte[] block_j) {
                 int length_block = 12;
-                byte tmp_bit;
+                byte tmp_byte;
                 byte[] xor_result = new byte[length_block];
 
                 for (int i=0; i<length_block; i++) {
-                        tmp_bit = (byte)(block_i[i] ^ block_j[i]);
-                        xor_result[i] = (byte) (0xff & tmp_bit); // Removes the first 24 bits, and saved the 8 LSB.
+                        tmp_byte = (byte)(block_i[i] ^ block_j[i]);
+                        xor_result[i] = (byte) tmp_byte;
                 }
                 
                 return xor_result;
@@ -107,13 +105,13 @@ public class CBCXor {
         public static byte[] decyption_scheme(byte[] encryption, int block_counter, byte[] key){
                 // Decryption scheme: m_i = (K ^c_i) ^c_(i-1)
                 int length_block = 12;
-                byte[] tmp_byte1 = new byte[length_block];
-                byte[] tmp_byte2 = new byte[length_block];
+                byte[] tmp_bytes1 = new byte[length_block];
+                byte[] tmp_bytes2 = new byte[length_block];
                 byte[] message = new byte[length_block];
 
-                tmp_byte1 = XOR(key, getBlocks(encryption, block_counter-1));
-                tmp_byte2 = XOR(tmp_byte1, getBlocks(encryption, block_counter));
-                message = tmp_byte2;
+                tmp_bytes1 = XOR(key, getBlocks(encryption, block_counter-1));
+                tmp_bytes2 = XOR(tmp_bytes1, getBlocks(encryption, block_counter));
+                message = tmp_bytes2;
                 return message;
         }
 }

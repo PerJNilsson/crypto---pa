@@ -1,0 +1,3 @@
+javac --add-modules java.xml.bind CBCXor.java 
+
+java --add-modules java.xml.bind CBCXor
