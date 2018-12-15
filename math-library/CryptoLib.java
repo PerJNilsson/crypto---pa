@@ -172,7 +172,7 @@ public class CryptoLib {
           r2 = r0;
       }
       gcd = p_r;
-      if (gcd < 1){
+      if (gcd != 1){
           v = 0; // if not exists
       }
       else {
