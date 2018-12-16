@@ -36,7 +36,7 @@ public class AttackRSA {
 	 * Tries to recover the message based on the three intercepted cipher texts.
 	 * In each array the same index refers to same receiver. I.e. receiver 0 has
 	 * modulus N[0], public key d[0] and received message c[0], etc.
-	 * 
+	 *
 	 * @param N
 	 *            The modulus of each receiver.
 	 * @param e
@@ -48,7 +48,28 @@ public class AttackRSA {
 	private static BigInteger recoverMessage(BigInteger[] N, BigInteger[] e,
 			BigInteger[] c) {
 		// TODO Solve assignment.
-		return BigInteger.ZERO;
+		BigInteger M = BigInteger.ZERO;
+		BigInteger X = BigInteger.ZERO;
+		BigInteger X1 = BigInteger.ZERO;
+		BigInteger X1_temp = BigInteger.ZERO;
+		BigInteger X2 = BigInteger.ZERO;
+		BigInteger X2_temp = BigInteger.ZERO;
+		BigInteger X3 = BigInteger.ZERO;
+		BigInteger X3_temp = BigInteger.ZERO;
+
+		X1_temp = (N[1].multiply(N[2])).modInverse(N[0]);
+		X1 = X1_temp.multiply(c[0].multiply(N[1].multiply(N[2])));
+
+		X2_temp = (N[0].multiply(N[2])).modInverse(N[1]);
+		X2 = X2_temp.multiply(c[1].multiply(N[0].multiply(N[2])));
+
+		X3_temp = (N[0].multiply(N[1])).modInverse(N[2]);
+		X3 = X3_temp.multiply(c[2].multiply(N[0].multiply(N[1])));
+
+		X = (X3.add(X2.add(X1))).mod(N[0].multiply(N[1].multiply(N[2])));
+
+		M = CubeRoot.cbrt(X);
+		return M;
 	}
 
 }

@@ -5,7 +5,7 @@ import java.math.MathContext;
 /**
  * Helper class for the RSA assignment. This class provides the method 'cbrt'
  * which returns the cube root of a BigInteger.
- * 
+ *
  * The code is taken from
  * "A Java Math.BigDecimal Implementation of Core Mathematical Functions"
  * Available at: http://arxiv.org/abs/0908.3030
@@ -14,7 +14,7 @@ public class CubeRoot {
 
 	/**
 	 * Returns the cube root for big integers.
-	 * 
+	 *
 	 * @param val
 	 *            Value to compute the cube root of.
 	 * @return (Rounded down) cube root of argument. That is, a value x such
@@ -26,7 +26,7 @@ public class CubeRoot {
 
 	/**
 	 * The integer root.
-	 * 
+	 *
 	 * @param n
 	 *            the positive argument.
 	 * @param x
@@ -82,7 +82,7 @@ public class CubeRoot {
 	/**
 	 * Append decimal zeros to the value. This returns a value which appears to
 	 * have a higher precision than the input.
-	 * 
+	 *
 	 * @param x
 	 *            The input value
 	 * @param d
@@ -97,7 +97,7 @@ public class CubeRoot {
 
 	/**
 	 * Convert a relative error to a precision.
-	 * 
+	 *
 	 * @param xerr
 	 *            The relative error in the variable. The value returned depends
 	 *            only on the absolute value, not on the sign.
